@@ -1,14 +1,15 @@
 package com.example.servercomputer.api;
 
+import com.example.servercomputer.entity.User;
 import com.example.servercomputer.response.ResponseMessageDto;
 import com.example.servercomputer.service.CloudinaryService;
+import com.example.servercomputer.service.EmailService;
+import com.example.servercomputer.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,6 +21,8 @@ import java.util.Map;
 public class CloudinaryAPI {
     @Autowired
     private CloudinaryService cloudDinaryService;
+    @Autowired
+    private EmailService emailService;
     @PostMapping("/cloudinary")
     public ResponseEntity<ResponseMessageDto> upLoad(@RequestParam("file") MultipartFile multipartFile)
             throws IOException {

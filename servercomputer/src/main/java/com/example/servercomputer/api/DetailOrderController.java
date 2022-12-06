@@ -165,4 +165,18 @@ public class DetailOrderController {
 //
 //        return ResponseEntity.ok(responseDTO);
 //    }
+@PutMapping("/cancel/qty/{order_id}")
+//http://localhost:8081/api/detailorder/odetail/qty/1
+public ResponseEntity<ResponseDTO> restore(@PathVariable(value = "order_id") Long productId) throws UpdateDataFail {
+    ResponseDTO responseDTO = new ResponseDTO();
+    try {
+        String updateDetail = detailService.restoreCancelStatus(productId);
+        responseDTO.setData(updateDetail);
+        responseDTO.setSuccessCode(SuccessCode.UPDATE_ORDER_DETAIL_SUCCESS);
+    } catch (Exception e){
+        throw new UpdateDataFail(""+ErrorCode.UPDATE_ORDER_DETAIL_ERROR);
+    }
+
+    return ResponseEntity.ok(responseDTO);
+}
 }

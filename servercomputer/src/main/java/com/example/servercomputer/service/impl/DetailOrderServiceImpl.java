@@ -163,6 +163,9 @@ public List<DetailOrderDTO> saveOrderDetail(List<DetailOrderDTO> detailDTO) thro
         return new DetailOrderDTO().entityToDTO(detailRepository.save(detail));
     }
 
+
+
+
     @Override
     public List<Object> getTopProduct() {
         List<Object> topProducts = new ArrayList<>();
@@ -177,6 +180,26 @@ public List<DetailOrderDTO> saveOrderDetail(List<DetailOrderDTO> detailDTO) thro
 //            //topProducts.get(i).setProductName((String) query.getParameterValue(i));
 //        }
         return topProducts;
+    }
+
+    @Override
+    public String restoreCancelStatus(Long orderId) throws ResourceNotFoundException {
+        Optional<Order> orderExist = orderRepository.findById(orderId);
+        if (!orderExist.isPresent()) {
+            throw new ResourceNotFoundException("" + ErrorCode.FIND_ORDER_ERROR);
+        }
+        Order order = orderExist.get();
+
+        List<DetailOrder> list = null;
+        list = detailRepository.findOrderDetailsByOrder(order);
+        for (DetailOrder orderItem:list
+             ) {
+            Product product = productrepository.findById(orderItem.getProduct().getId()).orElseThrow(() ->
+                    new ResourceNotFoundException("product not found for this id: " + orderItem.getProduct().getId()));
+            product.setQuantity(orderItem.getDetail_qty()+product.getQuantity());
+            productrepository.save(product);
+        }
+        return "";
     }
 
 //    @Override

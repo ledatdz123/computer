@@ -129,11 +129,38 @@ public class OrderController {
 //    {
 //        "status": "processing"
 //    }
-    public ResponseEntity<ResponseDTO> updateStatusOrder(@PathVariable(value = "order_id") Long orderId,
-                                                         @RequestParam String status) throws UpdateDataFail {
+    public ResponseEntity<ResponseDTO> updateOrderStatus(@PathVariable(value = "order_id") Long orderId,
+                                                   @Valid @RequestBody OrderDTO orderDTO) throws UpdateDataFail {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
-            OrderDTO updateOrder = orderService.updateStatusOrder(orderId, status);
+            OrderDTO updateOrder = orderService.updateOrderStatus(orderId, orderDTO);
+            responseDTO.setData(updateOrder);
+            responseDTO.setSuccessCode(SuccessCode.UPDATE_ORDER_SUCCESS);
+        } catch (Exception e){
+            throw new UpdateDataFail(""+ErrorCode.UPDATE_ORDER_ERROR);
+        }
+
+        return ResponseEntity.ok(responseDTO);
+    }
+    @PutMapping("/updateStatus/{order_id}")
+    public ResponseEntity<ResponseDTO> updateStatusOrder(@PathVariable(value = "order_id") Long orderId) throws UpdateDataFail {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            OrderDTO updateOrder = orderService.updateStatusOrder(orderId);
+
+            responseDTO.setData(updateOrder);
+            responseDTO.setSuccessCode(SuccessCode.UPDATE_ORDER_SUCCESS);
+        } catch (Exception e){
+            throw new UpdateDataFail(""+ErrorCode.UPDATE_ORDER_ERROR);
+        }
+
+        return ResponseEntity.ok(responseDTO);
+    }
+    @PutMapping("/cancelStatus/{order_id}")
+    public ResponseEntity<ResponseDTO> cancelStatusOrder(@PathVariable(value = "order_id") Long orderId) throws UpdateDataFail {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            OrderDTO updateOrder = orderService.cancelStatusOrder(orderId);
 
             responseDTO.setData(updateOrder);
             responseDTO.setSuccessCode(SuccessCode.UPDATE_ORDER_SUCCESS);

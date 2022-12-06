@@ -2,6 +2,7 @@ package com.example.servercomputer.service;
 
 import com.example.servercomputer.dto.OrderDTO;
 import com.example.servercomputer.exception.ResourceNotFoundException;
+import com.example.servercomputer.exception.UpdateDataFail;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,9 @@ public interface OrderService {
     public OrderDTO updateOrder(Long orderId,OrderDTO order) throws ResourceNotFoundException;
 
     public List<OrderDTO> findOrderByUser(Long userId) throws ResourceNotFoundException;
+    public OrderDTO updateOrderStatus(Long orderId,OrderDTO order) throws ResourceNotFoundException;
+    public OrderDTO updateStatusOrder(Long orderId) throws ResourceNotFoundException;
+    public OrderDTO cancelStatusOrder(Long orderId) throws ResourceNotFoundException, UpdateDataFail;
 
-    public OrderDTO updateStatusOrder(Long orderId, String status) throws ResourceNotFoundException;
 }
 

@@ -24,4 +24,6 @@ public interface DetailOrderService {
     public DetailOrderDTO restoreQty(Long id) throws ResourceNotFoundException;
 
     public List<Object> getTopProduct();
+
+    public String restoreCancelStatus(Long orderId) throws ResourceNotFoundException;
 }
