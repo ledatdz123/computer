@@ -1,27 +1,19 @@
 package com.example.servercomputer.service;
 
-import java.util.List;
-
 import com.example.servercomputer.dto.UserDTO;
+import com.example.servercomputer.exception.ResourceNotFoundException;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
-	public List<UserDTO> findAll();
-	
-	public UserDTO findOneById(Long id);
-	
-	public UserDTO save(UserDTO user);
-	
-	public boolean delete(Long id);
+    public List<UserDTO> retrieveUsers();
 
-	public UserDTO login(UserDTO user);
+    public Optional<UserDTO> getUser(Long userId) throws ResourceNotFoundException;
 
-	public UserDTO changePassword(UserDTO user);
+    public UserDTO saveUser(UserDTO userDTO);
 
-	public UserDTO findByEmail(String userMail);
-	
-	public void createResetToken(String token, String email);
-	
-	public UserDTO findByResetToken(String token);
-	
-	public void updateNewPassword(String userMail, String newPassword);
+    public Boolean deleteUser(Long userId) throws ResourceNotFoundException;
+
+    UserDTO updateUser(Long userId, UserDTO userDTO) throws ResourceNotFoundException;
 }

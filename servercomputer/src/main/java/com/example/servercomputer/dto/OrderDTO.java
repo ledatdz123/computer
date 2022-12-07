@@ -1,6 +1,7 @@
 package com.example.servercomputer.dto;
 
 import com.example.servercomputer.entity.Order;
+import com.example.servercomputer.entity.entityenum.EGender;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

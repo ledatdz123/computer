@@ -1,7 +1,12 @@
 package com.example.servercomputer.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import com.example.servercomputer.entity.User;
 import com.example.servercomputer.entity.entityenum.EGender;
 import com.example.servercomputer.entity.entityenum.EStatusUser;
 
@@ -19,5 +24,50 @@ public class UserDTO {
 	private EGender gender;
 	private LocalDate birthday;
 	private EStatusUser status;
-	private Long roleId;
+	private Set<String> roles;
+
+	public UserDTO convertToDto(User user) {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(user.getId());
+		userDTO.setFirstName(user.getFirstName());
+		userDTO.setLastName(user.getLastName());
+		userDTO.setEmail(user.getEmail());
+		userDTO.setPassword(user.getPassword());
+		userDTO.setPhoneNumber(user.getPhoneNumber());
+		userDTO.setAddress(user.getAddress());
+		userDTO.setBirthday(user.getBirthday());
+		userDTO.setGender(user.getGender());
+		Set<String> roles = new HashSet<>();
+		user.getRoles().forEach(r -> {
+			roles.add(r.getRoleName());
+		});
+		userDTO.setRoles(roles);
+
+		return userDTO;
+	}
+	public User convertToEti(UserDTO userDTO) {
+		User user = new User();
+
+		user.setFirstName(userDTO.getFirstName());
+		user.setLastName(userDTO.getLastName());
+		userDTO.setAddress(user.getAddress());
+		userDTO.setPhoneNumber(userDTO.getPhoneNumber());
+		userDTO.setBirthday(user.getBirthday());
+		userDTO.setGender(user.getGender());
+//        Set<Role> roles = new HashSet<>();
+//        userDTO.getRoles().forEach(r ->{
+//            roles.add(r.get)
+//        });
+//        user.setRoles(userDTO.getRoles());
+//        user.setRoles(userDTO.getRoleDTOS());
+		return user;
+	}
+	public List<UserDTO> toListDto(List<User> listEntity) {
+		List<UserDTO> listDto = new ArrayList<>();
+
+		listEntity.forEach(e->{
+			listDto.add(this.convertToDto(e));
+		});
+		return listDto;
+	}
 }
