@@ -27,6 +27,8 @@ public class Order {
     private String address;
     @Column(name="phone")
     private String phone;
+    @Column(name="payment")
+    private String payment;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "iduser")
     private User user;

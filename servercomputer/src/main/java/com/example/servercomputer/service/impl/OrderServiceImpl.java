@@ -11,9 +11,11 @@ import com.example.servercomputer.repository.DetailOrderRepository;
 import com.example.servercomputer.repository.OrderRepository;
 import com.example.servercomputer.repository.ProductRepository;
 import com.example.servercomputer.repository.UserRepository;
+import com.example.servercomputer.response.MessageResponse;
 import com.example.servercomputer.service.EmailService;
 import com.example.servercomputer.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -139,44 +141,74 @@ public class OrderServiceImpl implements OrderService {
         return new OrderDTO().entityToDTO(order);
     }
 
+//    @Override
+//    public OrderDTO cancelStatusOrder(Long orderId) throws ResourceNotFoundException, UpdateDataFail {
+//        Order orderExist = orderRepository.findById(orderId).orElseThrow(() ->
+//                new ResourceNotFoundException("order not found for this id: " + orderId));
+//        String status = orderExist.getStatus();
+//        if (!status.equals("Pending")) {
+//            throw new UpdateDataFail("" + ErrorCode.UPDATE_ORDER_ERROR);
+//        }
+//        orderExist.setStatus("Canceled");
+//        Order order = new Order();
+//        order = orderRepository.save(orderExist);
+//
+//
+//
+//
+//        Optional<Order> orderExistNew = orderRepository.findById(orderId);
+//        if (!orderExistNew.isPresent()) {
+//            throw new ResourceNotFoundException("" + ErrorCode.FIND_ORDER_ERROR);
+//        }
+//        Order orderNew = orderExistNew.get();
+//
+//        List<DetailOrder> list = null;
+//        list = detailRepository.findOrderDetailsByOrder(order);
+//        for (DetailOrder orderItem:list
+//        ) {
+//            Product product = productrepository.findById(orderItem.getProduct().getId()).orElseThrow(() ->
+//                    new ResourceNotFoundException("product not found for this id: " + orderItem.getProduct().getId()));
+//            product.setQuantity(orderItem.getDetail_qty()+product.getQuantity());
+//            productrepository.save(product);
+//        }
+//
+//
+//        return new OrderDTO().entityToDTO(order);
+//    }
+
     @Override
-    public OrderDTO cancelStatusOrder(Long orderId) throws ResourceNotFoundException, UpdateDataFail {
+    public ResponseEntity<MessageResponse> cancelStatusOrder(Long orderId) throws ResourceNotFoundException, UpdateDataFail {
         Order orderExist = orderRepository.findById(orderId).orElseThrow(() ->
                 new ResourceNotFoundException("order not found for this id: " + orderId));
         String status = orderExist.getStatus();
         if (!status.equals("Pending")) {
-            throw new UpdateDataFail("" + ErrorCode.UPDATE_ORDER_ERROR);
+           throw new ResourceNotFoundException("order not found for this id: " + orderId);
         }
-        orderExist.setStatus("Canceled");
-        Order order = new Order();
-        order = orderRepository.save(orderExist);
+        else {
+            orderExist.setStatus("Canceled");
+            Order order = new Order();
+            order = orderRepository.save(orderExist);
 
+            Optional<Order> orderExistNew = orderRepository.findById(orderId);
+            if (!orderExistNew.isPresent()) {
+                throw new ResourceNotFoundException("" + ErrorCode.FIND_ORDER_ERROR);
+            }
+            Order orderNew = orderExistNew.get();
 
-
-
-        Optional<Order> orderExistNew = orderRepository.findById(orderId);
-        if (!orderExistNew.isPresent()) {
-            throw new ResourceNotFoundException("" + ErrorCode.FIND_ORDER_ERROR);
+            List<DetailOrder> list = null;
+            list = detailRepository.findOrderDetailsByOrder(order);
+            for (DetailOrder orderItem : list
+            ) {
+                Product product = productrepository.findById(orderItem.getProduct().getId()).orElseThrow(() ->
+                        new ResourceNotFoundException("product not found for this id: " + orderItem.getProduct().getId()));
+                product.setQuantity(orderItem.getDetail_qty() + product.getQuantity());
+                productrepository.save(product);
+            }
         }
-        Order orderNew = orderExistNew.get();
 
-        List<DetailOrder> list = null;
-        list = detailRepository.findOrderDetailsByOrder(order);
-        for (DetailOrder orderItem:list
-        ) {
-            Product product = productrepository.findById(orderItem.getProduct().getId()).orElseThrow(() ->
-                    new ResourceNotFoundException("product not found for this id: " + orderItem.getProduct().getId()));
-            product.setQuantity(orderItem.getDetail_qty()+product.getQuantity());
-            productrepository.save(product);
-        }
-
-
-
-
-
-
-        return new OrderDTO().entityToDTO(order);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
     public String restoreCancelStatus(Long orderId) throws ResourceNotFoundException {
         Optional<Order> orderExist = orderRepository.findById(orderId);
         if (!orderExist.isPresent()) {

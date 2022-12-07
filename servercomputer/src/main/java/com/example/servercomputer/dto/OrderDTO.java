@@ -16,20 +16,22 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDTO {
     private Long id;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern="dd/MM/yyyy")
     private LocalDate ngaydat;
     private String status;
     private Float total_price;
     private Long id_user;
+    private String payment;
     private String address;
     private String phone;
 
-    public OrderDTO(Long id, LocalDate ngaydat, String status, Float total_price, Long id_user, String address, String phone) {
+    public OrderDTO(Long id, LocalDate ngaydat, String status, Float total_price, Long id_user, String payment,String address, String phone) {
         this.id = id;
         this.ngaydat = ngaydat;
         this.status = status;
         this.total_price = total_price;
         this.id_user = id_user;
+        this.payment=payment;
         this.address = address;
         this.phone = phone;
     }
@@ -37,8 +39,9 @@ public class OrderDTO {
     public Order dtoToEntity(OrderDTO dto) {
         Order order = new Order();
         order.setTotal_price(dto.getTotal_price());
-        order.setStatus(dto.getStatus());
+        order.setStatus("Pending");
         order.setNgaydat(dto.getNgaydat());
+        order.setPayment(dto.getPayment());
         order.setAddress(dto.getAddress());
         order.setPhone(dto.getPhone());
         return order;

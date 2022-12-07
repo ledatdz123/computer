@@ -1,21 +1,21 @@
 package com.example.servercomputer.api;
 
-import com.example.servercomputer.dto.ErrorCode;
-import com.example.servercomputer.dto.OrderDTO;
-import com.example.servercomputer.dto.ResponseDTO;
-import com.example.servercomputer.dto.SuccessCode;
+import com.example.servercomputer.dto.*;
+import com.example.servercomputer.entity.*;
 import com.example.servercomputer.exception.*;
+import com.example.servercomputer.repository.DetailOrderRepository;
+import com.example.servercomputer.repository.OrderRepository;
+import com.example.servercomputer.repository.ProductRepository;
+import com.example.servercomputer.response.MessageResponse;
 import com.example.servercomputer.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -23,7 +23,12 @@ import java.util.Optional;
 public class OrderController {
     @Autowired
     private OrderService orderService;
-
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private DetailOrderRepository detailRepository;
+    @Autowired
+    private ProductRepository productrepository;
     //find all order
     @GetMapping("")
     public ResponseEntity<ResponseDTO> getAllOrder() throws GetDataFail {
@@ -142,7 +147,7 @@ public class OrderController {
 
         return ResponseEntity.ok(responseDTO);
     }
-    @PutMapping("/updateStatus/{order_id}")
+    @PutMapping("/updateStatusStep/{order_id}")
     public ResponseEntity<ResponseDTO> updateStatusOrder(@PathVariable(value = "order_id") Long orderId) throws UpdateDataFail {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -156,18 +161,39 @@ public class OrderController {
 
         return ResponseEntity.ok(responseDTO);
     }
-    @PutMapping("/cancelStatus/{order_id}")
-    public ResponseEntity<ResponseDTO> cancelStatusOrder(@PathVariable(value = "order_id") Long orderId) throws UpdateDataFail {
-        ResponseDTO responseDTO = new ResponseDTO();
-        try {
-            OrderDTO updateOrder = orderService.cancelStatusOrder(orderId);
+    @PutMapping("/statusCancel/{order_id}")
+    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> statusCancel(@PathVariable(value = "order_id") Long orderId) throws ResourceNotFoundException {
+        Order orderExist = orderRepository.findById(orderId).orElseThrow(() ->
+                new ResourceNotFoundException("order not found for this id: " + orderId));
+        String status = orderExist.getStatus();
+        if (!status.equals("Pending")) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Pending status has confirmed !"));
+        }
+        else {
+            orderExist.setStatus("Canceled");
+            Order order = new Order();
+            order = orderRepository.save(orderExist);
 
-            responseDTO.setData(updateOrder);
-            responseDTO.setSuccessCode(SuccessCode.UPDATE_ORDER_SUCCESS);
-        } catch (Exception e){
-            throw new UpdateDataFail(""+ErrorCode.UPDATE_ORDER_ERROR);
+            Optional<Order> orderExistNew = orderRepository.findById(orderId);
+            if (!orderExistNew.isPresent()) {
+                throw new ResourceNotFoundException("" + ErrorCode.FIND_ORDER_ERROR);
+            }
+            Order orderNew = orderExistNew.get();
+
+            List<DetailOrder> list = null;
+            list = detailRepository.findOrderDetailsByOrder(order);
+            for (DetailOrder orderItem : list
+            ) {
+                Product product = productrepository.findById(orderItem.getProduct().getId()).orElseThrow(() ->
+                        new ResourceNotFoundException("product not found for this id: " + orderItem.getProduct().getId()));
+                product.setQuantity(orderItem.getDetail_qty() + product.getQuantity());
+                productrepository.save(product);
+            }
         }
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(new MessageResponse("Cancel successed!"));
     }
 }
