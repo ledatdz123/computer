@@ -25,9 +25,15 @@ public class Product implements Serializable{
 	@Lob
     @Column(columnDefinition="MEDIUMBLOB")
 	private String image;
+
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "id", nullable = false)
 	private Category category;
+
+	@ManyToOne
+	@JoinColumn(referencedColumnName = "id", nullable = false)
+	private Brand brand;
+
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<DetailOrder> detailOrders;
 }

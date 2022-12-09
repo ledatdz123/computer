@@ -2,6 +2,7 @@ package com.example.servercomputer.service.impl;
 
 import java.util.List;
 
+import com.example.servercomputer.entity.Brand;
 import org.springframework.stereotype.Service;
 
 import com.example.servercomputer.entity.Category;
@@ -42,6 +43,15 @@ public class CategoryServiceImpl implements CategoryService{
 		categoryRepo.findById(id).orElseThrow(()-> new IllegalStateException("Not Found Category"));
 		categoryRepo.deleteById(id);
 		return true;
+	}
+
+	@Override
+	public Category update(Long id, Category category) {
+		Category brandExist=categoryRepo.findById(id)
+				.orElseThrow(()-> new IllegalStateException("Not Found Category"));
+		brandExist.setName(category.getName());
+		categoryRepo.save(brandExist);
+		return categoryRepo.save(category);
 	}
 
 }

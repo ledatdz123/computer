@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.example.servercomputer.entity.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,10 @@ public class CategoryAPI {
 	public List<Category> getList(){
 		return categoryService.findAll();
 	}
-	
+	@GetMapping("/{id}")
+	public Category update(@PathVariable Long id) {
+		return categoryService.findOneById(id);
+	}
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public Category save(@Valid @RequestBody Category category) {
 		return categoryService.save(category);
@@ -37,7 +41,11 @@ public class CategoryAPI {
 	public Category update(@Valid @RequestBody Category category) {
 		return categoryService.save(category);
 	}
-	
+
+	@PutMapping("/{id}")
+	public Category update(@PathVariable Long id, @Valid @RequestBody Category category) {
+		return categoryService.update(id, category);
+	}
 	@DeleteMapping("/{id}")
 	public boolean delete(@PathVariable Long id) {
 		return categoryService.delete(id);
