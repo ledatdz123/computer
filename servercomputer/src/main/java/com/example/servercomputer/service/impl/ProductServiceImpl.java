@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.servercomputer.exception.BadRequestException;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -58,7 +60,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductDTO save(ProductDTO product) {
+	public ProductDTO save(ProductDTO product){
+		Product product1=new Product();
 		if(product.getId()!=null) {
 			ProductDTO oldProduct = findOneById(product.getId());
 			oldProduct.setName(product.getName());
@@ -71,6 +74,7 @@ public class ProductServiceImpl implements ProductService {
 			if(!product.getImage().isBlank())
 				oldProduct.setImage(product.getImage());
 			System.out.println(toEntity(oldProduct).toString());
+			oldProduct.setAvgRating(0F);
 			return toDTO(productRepository.save(toEntity(oldProduct)));
 		}
 		return toDTO(productRepository.save(toEntity(product)));

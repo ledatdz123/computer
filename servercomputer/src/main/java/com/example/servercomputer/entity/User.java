@@ -96,8 +96,8 @@ public class User implements Serializable{
 	private Set<Role> roles = new HashSet<>();
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Order> orders;
-	public User(){
 
+	public User(){
 	}
 	public User(String email, String password) {
 		this.email = email;

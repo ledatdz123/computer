@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import com.example.servercomputer.entity.Category;
 import com.example.servercomputer.entity.Product;
+import com.example.servercomputer.exception.BadRequestException;
 import com.example.servercomputer.repository.CategoryRepository;
 import com.example.servercomputer.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,13 +143,13 @@ public class ProductAPI {
 	
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ProductDTO save(@Valid @RequestBody ProductDTO product){
+	public ProductDTO save(@Valid @RequestBody ProductDTO product) {
 		return productService.save(product);
 	}
 	
 	@PutMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ProductDTO update(@RequestBody ProductDTO product){
+	public ProductDTO update(@RequestBody ProductDTO product) {
 		return productService.save(product);
 	}
 	

@@ -25,7 +25,8 @@ public class Product implements Serializable{
 	@Lob
     @Column(columnDefinition="MEDIUMBLOB")
 	private String image;
-
+	@Column(name = "avg_rating")
+	private float avgRating;
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "id", nullable = false)
 	private Category category;

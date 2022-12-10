@@ -2,6 +2,7 @@ package com.example.servercomputer.service;
 
 import java.util.List;
 
+import com.example.servercomputer.exception.BadRequestException;
 import org.springframework.data.domain.Page;
 
 import com.example.servercomputer.dto.ProductDTO;
