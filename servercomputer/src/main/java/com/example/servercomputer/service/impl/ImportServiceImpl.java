@@ -1,6 +1,7 @@
 package com.example.servercomputer.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -66,11 +67,13 @@ public class ImportServiceImpl implements ImportService {
 	@Override
 	public List<ImportDetailDTO> saveDetails(List<ImportDetailDTO> detailDTOs) {
 		List<ImportDetail> details = detailDTOs.stream().map(this::toEntityDetail).collect(Collectors.toList());
-		details.forEach(t -> {
-			Product product = productRepo.findById(t.getProduct().getId()).orElse(null);
-			Integer quantity = (product.getQuantity() + t.getQuantity());
-			productRepo.updateQuantity(quantity, product.getId());
-		});
+		if (Objects.nonNull(details)) {
+			details.forEach(t -> {
+				Product product = productRepo.findById(t.getProduct().getId()).orElse(null);
+				Integer quantity = (product.getQuantity() + t.getQuantity());
+				productRepo.updateQuantity(quantity, product.getId());
+			});
+		}
 		return importDetailRepo.saveAll(details).stream().map(this::toDTODetail).collect(Collectors.toList());
 	}
 

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -41,10 +42,11 @@ public class CTPhieuNhapResponseDTO {
 
     public List<CTPhieuNhapResponseDTO> toListDto(List<DetailImport> listEntity) {
         List<CTPhieuNhapResponseDTO> listDto = new ArrayList<>();
-
-        listEntity.forEach(e->{
-            listDto.add(this.convertToDto(e));
-        });
+        if (Objects.nonNull(listEntity)) {
+            listEntity.forEach(e -> {
+                listDto.add(this.convertToDto(e));
+            });
+        }
         return listDto;
     }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,11 +30,10 @@ public class Order {
     private String phone;
     @Column(name="payment")
     private String payment;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "iduser")
     private User user;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<DetailOrder> detailOrders;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="order")
+    private List<DetailOrder> detailOrders;
 }
 

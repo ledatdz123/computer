@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Getter
@@ -45,9 +46,11 @@ public class PhieuNhapResponseDTO {
     public List<PhieuNhapResponseDTO> toListDto(List<Imports> listEntity) {
         List<PhieuNhapResponseDTO> listDto = new ArrayList<>();
 
-        listEntity.forEach(e->{
-            listDto.add(this.convertToDto(e));
-        });
+        if(Objects.nonNull(listEntity)) {
+            listEntity.forEach(e->{
+                listDto.add(this.convertToDto(e));
+            });
+        }
         return listDto;
     }
 }
