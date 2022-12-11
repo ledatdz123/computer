@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         userExist.setFirstName(userDTO.getFirstName());
         userExist.setLastName(userDTO.getLastName());
         userExist.setAddress(userDTO.getAddress());
-
+        userExist.setPhoneNumber(userDTO.getPhoneNumber());
         Set<String> strRoles = userDTO.getRoles();
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
@@ -79,6 +79,9 @@ public class UserServiceImpl implements UserService {
             });
         }
         userExist.setRoles(roles);
+        userExist.setGender(userDTO.getGender());
+        userExist.setBirthday(userDTO.getBirthday());
+        userExist.setStatus(userDTO.getStatus());
         User user = new User();
         user = userRepository.save(userExist);
         return new UserDTO().convertToDto(user);

@@ -64,7 +64,14 @@ public class AuthController {
             return ResponseEntity.ok(new JwtTokenResponse(jwt,
                     userDetails.getId(),
                     userDetails.getUsername(),
-                    roles));
+                    roles,
+                    userDetails.getAddress(),
+                    userDetails.getFirstName(),
+                    userDetails.getLastName(),
+                    userDetails.getPhoneNumber(),
+                    userDetails.getGender(),
+                    userDetails.getBirthday(),
+                    userDetails.getStatus()));
         }catch (Exception e){
             return new ResponseEntity<>(new MessageResponse("User login no success!"), HttpStatus.UNAUTHORIZED);
         }

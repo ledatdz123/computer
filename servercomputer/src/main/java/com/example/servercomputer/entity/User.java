@@ -50,6 +50,14 @@ public class User implements Serializable{
 		this.birthday = birthday;
 	}
 
+	public EStatusUser getStatus() {
+		return status;
+	}
+
+	public void setStatus(EStatusUser status) {
+		this.status = status;
+	}
+
 	private EStatusUser status;
 
 	public static long getSerialVersionUID() {
