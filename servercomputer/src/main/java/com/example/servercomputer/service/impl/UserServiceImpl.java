@@ -1,6 +1,7 @@
 package com.example.servercomputer.service.impl;
 
 import com.example.servercomputer.dto.UserDTO;
+import com.example.servercomputer.entity.Role;
 import com.example.servercomputer.entity.User;
 import com.example.servercomputer.exception.ResourceNotFoundException;
 import com.example.servercomputer.repository.RoleRepository;
@@ -9,8 +10,11 @@ import com.example.servercomputer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -50,8 +54,34 @@ public class UserServiceImpl implements UserService {
         userExist.setFirstName(userDTO.getFirstName());
         userExist.setLastName(userDTO.getLastName());
         userExist.setAddress(userDTO.getAddress());
+
+        Set<String> strRoles = userDTO.getRoles();
+        Set<Role> roles = new HashSet<>();
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByRoleName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                if ("ROLE_ADMIN".equals(role.toString())) {
+                    Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN")
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(adminRole);
+                } else if ("manager".equals(role.toString())) {
+                    Role modRole = roleRepository.findByRoleName("ROLE_MANAGER")
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(modRole);
+                } else {
+                    Role userRole = roleRepository.findByRoleName("ROLE_USER")
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(userRole);
+                }
+            });
+        }
+        userExist.setRoles(roles);
         User user = new User();
         user = userRepository.save(userExist);
         return new UserDTO().convertToDto(user);
+
     }
 }

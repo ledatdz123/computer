@@ -1,11 +1,14 @@
 package com.example.servercomputer.service.impl;
 
 import com.example.servercomputer.entity.User;
+import com.example.servercomputer.entity.entityenum.EGender;
+import com.example.servercomputer.entity.entityenum.EStatusUser;
 import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +20,13 @@ public class MyUserDetails implements UserDetails {
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
-
+    private String address;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private EGender gender;
+    private LocalDate birthday;
+    private EStatusUser status;
     public MyUserDetails() {
     }
 

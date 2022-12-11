@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.example.servercomputer.entity.Role;
 import com.example.servercomputer.entity.User;
 import com.example.servercomputer.entity.entityenum.EGender;
 import com.example.servercomputer.entity.entityenum.EStatusUser;
@@ -59,7 +60,7 @@ public class UserDTO {
 //            roles.add(r.get)
 //        });
 //        user.setRoles(userDTO.getRoles());
-//        user.setRoles(userDTO.getRoleDTOS());
+
 		return user;
 	}
 	public List<UserDTO> toListDto(List<User> listEntity) {
@@ -69,5 +70,12 @@ public class UserDTO {
 			listDto.add(this.convertToDto(e));
 		});
 		return listDto;
+	}
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
 	}
 }

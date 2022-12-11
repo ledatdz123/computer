@@ -135,6 +135,9 @@ public class ProductAPI {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+
+
 	@GetMapping("/relate")
 	public List<ProductDTO> getRelateProduct(
 			@RequestParam("categoryId") Long id) {

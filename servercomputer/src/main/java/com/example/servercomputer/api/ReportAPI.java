@@ -35,4 +35,11 @@ public class ReportAPI {
 		LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE);
 		return reportService.getReportByTime(start, end);
 	}
+	@GetMapping("/date")
+	public List<Object[]> getReportDate(@RequestParam String startDate,
+										@RequestParam String endDate){
+//		LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE);
+//		LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE);
+		return reportService.getReportByDate(startDate, endDate);
+	}
 }

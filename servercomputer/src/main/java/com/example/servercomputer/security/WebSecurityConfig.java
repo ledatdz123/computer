@@ -62,6 +62,7 @@ public class WebSecurityConfig {
                 .antMatchers("/api/upload/**").permitAll()
                 .antMatchers("/api/cart/**").permitAll()
                 .antMatchers("/api/import/**").permitAll()
+                .antMatchers("/api/report/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 //        http.cors().and().csrf().disable()
