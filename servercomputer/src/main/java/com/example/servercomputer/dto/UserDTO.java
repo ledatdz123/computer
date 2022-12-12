@@ -1,10 +1,7 @@
 package com.example.servercomputer.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.example.servercomputer.entity.Role;
 import com.example.servercomputer.entity.User;
@@ -39,9 +36,12 @@ public class UserDTO {
 		userDTO.setBirthday(user.getBirthday());
 		userDTO.setGender(user.getGender());
 		Set<String> roles = new HashSet<>();
-		user.getRoles().forEach(r -> {
-			roles.add(r.getRoleName());
-		});
+		if(Objects.nonNull(user.getRoles())) {
+			user.getRoles().forEach(r -> {
+				roles.add(r.getRoleName());
+			});
+		}
+
 		userDTO.setRoles(roles);
 
 		return userDTO;

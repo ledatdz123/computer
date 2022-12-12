@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -38,13 +39,17 @@ public class CTPhieuNhapDTO {
 
     public List<CTPhieuNhapDTO> entityToDTO(List<DetailImport> ctPhieuNhaps) {
         List<CTPhieuNhapDTO> list = new ArrayList<>();
-        ctPhieuNhaps.forEach(x-> list.add(entityToDTO(x)));
+        if (Objects.nonNull(ctPhieuNhaps)) {
+            ctPhieuNhaps.forEach(x -> list.add(entityToDTO(x)));
+        }
         return list;
     }
 
     public List<DetailImport> dtoToEntity(List<CTPhieuNhapDTO> dtos) {
         List<DetailImport> list = new ArrayList<>();
-        dtos.forEach(x-> list.add(dtoToEntity(x)));
+        if (Objects.nonNull(dtos)) {
+            dtos.forEach(x -> list.add(dtoToEntity(x)));
+        }
         return list;
     }
 }

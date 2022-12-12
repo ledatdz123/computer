@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -60,9 +61,11 @@ public class OrderDetailResponseDTO {
     public List<OrderDetailResponseDTO> toListDto(List<DetailOrder> listEntity) {
         List<OrderDetailResponseDTO> listDto = new ArrayList<>();
 
-        listEntity.forEach(e->{
-            listDto.add(this.convertToDto(e));
-        });
+        if (Objects.nonNull(listEntity)) {
+            listEntity.forEach(e -> {
+                listDto.add(this.convertToDto(e));
+            });
+        }
         return listDto;
     }
 }

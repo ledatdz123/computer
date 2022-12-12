@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -38,13 +39,18 @@ public class DetailOrderDTO {
 
     public List<DetailOrderDTO> entityToDTO(List<DetailOrder> detailOrders) {
         List<DetailOrderDTO> list = new ArrayList<>();
-        detailOrders.forEach(x-> list.add(entityToDTO(x)));
+        if (Objects.nonNull(detailOrders)){
+            detailOrders.forEach(x -> list.add(entityToDTO(x)));
+        }
         return list;
     }
 
     public List<DetailOrder> dtoToEntity(List<DetailOrderDTO> detailOrders) {
         List<DetailOrder> list = new ArrayList<>();
-        detailOrders.forEach(x-> list.add(dtoToEntity(x)));
+        if (Objects.nonNull(detailOrders)){
+            detailOrders.forEach(x-> list.add(dtoToEntity(x)));
+        }
+
         return list;
     }
 }

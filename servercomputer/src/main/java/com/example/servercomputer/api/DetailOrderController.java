@@ -6,6 +6,7 @@ import com.example.servercomputer.service.DetailOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "api/detailorder")
+@Slf4j
 public class DetailOrderController {
     @Autowired
     private DetailOrderService detailService;
@@ -81,7 +83,8 @@ public class DetailOrderController {
             responseDTO.setData(dto);
             responseDTO.setSuccessCode(SuccessCode.ADD_ORDER_DETAIL_SUCCESS);
         } catch (Exception e){
-            throw new AddDataFail(""+ErrorCode.ADD_ORDER_DETAIL_ERROR);
+            log.error("DetailOrder controller:" + e.getMessage());
+            throw new AddDataFail(""+ErrorCode.ADD_ORDER_DETAIL_ERROR + ":" + e.getMessage());
         }
 
         return ResponseEntity.ok(responseDTO);

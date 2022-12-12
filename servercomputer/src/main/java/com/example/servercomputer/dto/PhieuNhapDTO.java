@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -35,14 +36,17 @@ public class PhieuNhapDTO {
 
     public List<Imports> dtoToEntity(List<PhieuNhapDTO> dtos) {
         List<Imports> list = new ArrayList<>();
-        dtos.forEach(x -> list.add(dtoToEntity(x)));
+        if (Objects.nonNull(dtos)) {
+            dtos.forEach(x -> list.add(dtoToEntity(x)));
+        }
         return list;
     }
 
     public List<PhieuNhapDTO> entityToDTO(List<Imports> phieuNhaps) {
         List<PhieuNhapDTO> list = new ArrayList<>();
-        phieuNhaps.forEach(x-> list.add(entityToDTO(x)));
-
+        if (Objects.nonNull(phieuNhaps)) {
+            phieuNhaps.forEach(x -> list.add(entityToDTO(x)));
+        }
         return list;
     }
 }
