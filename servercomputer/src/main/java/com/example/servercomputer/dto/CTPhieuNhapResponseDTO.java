@@ -18,14 +18,14 @@ public class CTPhieuNhapResponseDTO {
     private float priceNhap;
     private String productName;
     private String imageDTOS;
-
     public CTPhieuNhapResponseDTO convertToDto(DetailImport detail) {
         CTPhieuNhapResponseDTO deatailDTO = new CTPhieuNhapResponseDTO();
 
         deatailDTO.setId(detail.getId());
         deatailDTO.setQtyNhap(detail.getQuantity());
         deatailDTO.setPriceNhap(detail.getPrice());
-
+        deatailDTO.setImageDTOS(detail.getProduct().getImage());
+        deatailDTO.setProductName(detail.getProduct().getName());
         return deatailDTO;
     }
 
@@ -35,7 +35,6 @@ public class CTPhieuNhapResponseDTO {
         detail.setId(deatailDTO.getId());
         detail.setQuantity(deatailDTO.getQtyNhap());
         detail.setPrice(deatailDTO.getPriceNhap());
-
         return detail;
     }
 

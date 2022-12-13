@@ -729,25 +729,25 @@ public class OrderServiceImpl implements OrderService {
             orderExist.setStatus("Shipping");
         } else if (status.equals("Shipping")) {
             orderExist.setStatus("Delivered");
-            String email=orderExist.getUser().getEmail();
-            String address=orderExist.getAddress();
-            String phone=orderExist.getPhone();
-            String ht="";
-            Optional<Order> orders = orderRepository.findById(orderId);
-            if (!orders.isPresent()) {
-                throw new ResourceNotFoundException("" + ErrorCode.FIND_ORDER_ERROR);
-            }
-            Order order = orders.get();
-
-            List<DetailOrder> listOrder = null;
-            listOrder = detailRepository.findOrderDetailsByOrder(order);
-            for (DetailOrder listElement: listOrder
-                 ) {
-                ht+= "<h1>Product Name: "+listElement.getProduct().getName()+"</h1>";
-                ht+="<h1>Price: "+listElement.getDetail_price().toString()+"</h1>";
-            }
-            emailService.sendMailWithAttachment(email, "TTP SHOP ORDER", "<h1>Check attachment for image!</h1>"
-                    , ht);
+//            String email=orderExist.getUser().getEmail();
+//            String address=orderExist.getAddress();
+//            String phone=orderExist.getPhone();
+//            String ht="";
+//            Optional<Order> orders = orderRepository.findById(orderId);
+//            if (!orders.isPresent()) {
+//                throw new ResourceNotFoundException("" + ErrorCode.FIND_ORDER_ERROR);
+//            }
+//            Order order = orders.get();
+//
+//            List<DetailOrder> listOrder = null;
+//            listOrder = detailRepository.findOrderDetailsByOrder(order);
+//            for (DetailOrder listElement: listOrder
+//                 ) {
+//                ht+= "<h1>Product Name: "+listElement.getProduct().getName()+"</h1>";
+//                ht+="<h1>Price: "+listElement.getDetail_price().toString()+"</h1>";
+//            }
+//            emailService.sendMailWithAttachment(email, "TTP SHOP ORDER", "<h1>Check attachment for image!</h1>"
+//                    , ht);
         } else {
             orderExist.setStatus("Delivered");
         }

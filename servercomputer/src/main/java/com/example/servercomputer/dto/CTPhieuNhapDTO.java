@@ -18,7 +18,8 @@ public class CTPhieuNhapDTO {
     private Float price;
     private Long idimport;
     private Long idproduct;
-
+    private String image;
+    private String productName;
     public CTPhieuNhapDTO entityToDTO(DetailImport ctPhieuNhap) {
         CTPhieuNhapDTO dto = new CTPhieuNhapDTO();
         dto.setId(ctPhieuNhap.getId());
@@ -26,6 +27,8 @@ public class CTPhieuNhapDTO {
         dto.setPrice(ctPhieuNhap.getPrice());
         dto.setIdproduct(ctPhieuNhap.getProduct().getId());
         dto.setIdimport(ctPhieuNhap.getImports().getId());
+        dto.setImage(ctPhieuNhap.getProduct().getImage());
+        dto.setProductName(ctPhieuNhap.getProduct().getName());
         return dto;
     }
 
