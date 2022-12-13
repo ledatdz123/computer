@@ -8,6 +8,7 @@ import com.example.servercomputer.repository.OrderRepository;
 import com.example.servercomputer.repository.ProductRepository;
 import com.example.servercomputer.response.MessageResponse;
 import com.example.servercomputer.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "api/orders", method = RequestMethod.DELETE)
+@Slf4j
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -53,7 +55,6 @@ public class OrderController {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             Optional<OrderDTO> orderDTO = orderService.getOrder(orderId);
-
             responseDTO.setData(orderDTO);
             responseDTO.setSuccessCode(SuccessCode.FIND_ORDER_SUCCESS);
         } catch (Exception e){
@@ -74,21 +75,15 @@ public class OrderController {
 
     // create order
     @PostMapping("/add")
-//    {
-//        "status": "create",
-//            "total_price": 1000,
-//            "id_user": 1,
-//            "address": "sss",
-//            "phone": "1233345"
-//    }
-    public ResponseEntity<ResponseDTO> createOrder(@Valid @RequestBody OrderDTO orderDTO) throws AddDataFail {
+    public ResponseEntity<ResponseDTO> createOrder( @RequestBody OrderDTO orderDTO) throws AddDataFail {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             OrderDTO dto = orderService.saveOrder(orderDTO);
             responseDTO.setData(dto);
             responseDTO.setSuccessCode(SuccessCode.ADD_ORDER_SUCCESS);
         } catch (Exception e){
-            throw new AddDataFail(""+ ErrorCode.ADD_ORDER_ERROR);
+            log.error("Order controller:" + e.getMessage());
+            throw new AddDataFail(""+ ErrorCode.ADD_ORDER_ERROR +":" + e.getMessage());
         }
 
         return ResponseEntity.ok(responseDTO);

@@ -3,6 +3,7 @@ package com.example.servercomputer.dto;
 import com.example.servercomputer.entity.Order;
 import com.example.servercomputer.entity.entityenum.EGender;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,9 @@ import javax.persistence.Column;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -25,8 +29,10 @@ public class OrderDTO {
     private String payment;
     private String address;
     private String phone;
+    @JsonProperty("order_details")
+    private List<OrderDetailResponseDTO> orderDetailResponseDTOS;
 
-    public OrderDTO(Long id, LocalDate ngaydat, String status, Float total_price, Long id_user, String payment,String address, String phone) {
+    public OrderDTO(Long id, LocalDate ngaydat, String status, Float total_price, Long id_user, String payment,String address, String phone, List<OrderDetailResponseDTO> orderDetailResponseDTOS) {
         this.id = id;
         this.ngaydat = ngaydat;
         this.status = status;
@@ -35,6 +41,7 @@ public class OrderDTO {
         this.payment=payment;
         this.address = address;
         this.phone = phone;
+        this.orderDetailResponseDTOS = orderDetailResponseDTOS;
     }
 
     public Order dtoToEntity(OrderDTO dto) {
@@ -45,6 +52,8 @@ public class OrderDTO {
         order.setPayment(dto.getPayment());
         order.setAddress(dto.getAddress());
         order.setPhone(dto.getPhone());
+//        DetailOrderDTO orderDTO = new DetailOrderDTO();
+//        order.setDetailOrders(orderDTO.dtoToEntity(dto.getDetailOrderDTOS()));
         return order;
     }
 
@@ -57,18 +66,34 @@ public class OrderDTO {
         dto.setAddress((order.getAddress()));
         dto.setPhone(order.getPhone());
         dto.setId_user(order.getUser().getId());
+        List<OrderDetailResponseDTO> list = new ArrayList<>();
+        if  (Objects.nonNull(order.getDetailOrders())){
+            list = order.getDetailOrders().stream().map(detailOrder -> {
+                return new OrderDetailResponseDTO().convertToDto(detailOrder);
+            }).collect(Collectors.toList());
+        }
+        dto.setOrderDetailResponseDTOS(list);
+
         return dto;
     }
 
     public List<Order> dtoToEntity(List<OrderDTO> dtos) {
         List<Order> list = new ArrayList<>();
-        dtos.forEach(x -> list.add(this.dtoToEntity(x)));
+        if (Objects.nonNull(dtos)) {
+            dtos.forEach(x -> list.add(this.dtoToEntity(x)));
+        }
         return list;
     }
 
     public List<OrderDTO> entityToDTO(List<Order> orders) {
         List<OrderDTO> list = new ArrayList<>();
-        orders.forEach(x->{list.add(entityToDTO(x));});
+        if (Objects.nonNull(orders)) {
+            orders.forEach(x -> {
+                list.add(entityToDTO(x));
+            });
+        }
         return list;
     }
+
+
 }
