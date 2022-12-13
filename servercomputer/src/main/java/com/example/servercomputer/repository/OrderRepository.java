@@ -1,5 +1,6 @@
 package com.example.servercomputer.repository;
 
+import com.example.servercomputer.dto.ResponseDTO;
 import com.example.servercomputer.entity.Order;
 import com.example.servercomputer.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,4 +33,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //    GROUP by ngaydat order by ngaydat
     @Query(value = "SELECT product.id, product.name,product.image, sum(o.detail_qty) as sells from order_detail as o inner join product on o.product_id = product.id group by product.id order by sells desc limit 5", nativeQuery = true)
     List<Object[]> getTopFiveProduct();
+
+    @Query(value = "SELECT product.id, product.name,product.image, sum(o.detail_qty) as sells from order_detail as o inner join product on o.product_id = product.id group by product.id order by sells desc limit 5", nativeQuery = true)
+    List<Object[]> getTopFive();
 }

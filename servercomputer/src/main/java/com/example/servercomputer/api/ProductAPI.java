@@ -39,7 +39,7 @@ import com.example.servercomputer.service.ProductService;
 public class ProductAPI {
 	@Autowired
 	private ProductService productService;
-	private final int PAGE_SIZE = 6;
+	private final int PAGE_SIZE = 8;
 	private final int RELATED_SIZE = 4;
 
 	@Autowired

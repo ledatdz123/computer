@@ -1,5 +1,7 @@
 package com.example.servercomputer.service;
 
+import com.example.servercomputer.dto.ResponseDTO;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,4 +12,5 @@ public interface ReportService {
 
 	List<Object[]> getReportByDate(String startDate, String endDate);
 	List<Object[]> getTopFiveProduct();
+	List<Object[]> getTopFive();
 }

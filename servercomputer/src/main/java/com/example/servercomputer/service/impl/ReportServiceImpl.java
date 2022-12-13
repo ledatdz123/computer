@@ -3,6 +3,7 @@ package com.example.servercomputer.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.example.servercomputer.dto.ResponseDTO;
 import com.example.servercomputer.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,10 @@ public class ReportServiceImpl implements ReportService{
 	@Override
 	public List<Object[]> getTopFiveProduct() {
 		return orderRepository.getTopFiveProduct();
+	}
+
+	@Override
+	public List<Object[]> getTopFive() {
+		return orderRepository.getTopFive();
 	}
 }

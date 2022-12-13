@@ -71,10 +71,13 @@ public class OrderServiceImpl implements OrderService {
         Order saveOrder=orderRepository.save(order);
 
         String email=saveOrder.getUser().getEmail();
+        String firstName=saveOrder.getUser().getFirstName();
+        String lastName=saveOrder.getUser().getLastName();
         String address=saveOrder.getAddress();
         String phone=saveOrder.getPhone();
         String ngaydat=saveOrder.getNgaydat().toString();
         Float total=saveOrder.getTotal_price();
+        Long orderId=saveOrder.getId();
         String html="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
                 "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
                 "  <head>\n" +
@@ -522,7 +525,7 @@ public class OrderServiceImpl implements OrderService {
                 "            <tr>\n" +
                 "              <td class=\"email-masthead\">\n" +
                 "                <a href=\"https://example.com\" class=\"f-fallback email-masthead_name\">\n" +
-                "                [Product Name]\n" +
+                "                "+ "TTB COMPUTER SHOP"+"  \n" +
                 "              </a>\n" +
                 "              </td>\n" +
                 "            </tr>\n" +
@@ -534,9 +537,9 @@ public class OrderServiceImpl implements OrderService {
                 "                  <tr>\n" +
                 "                    <td class=\"content-cell\">\n" +
                 "                      <div class=\"f-fallback\">\n" +
-                "                        <h1>Hi {{name}},</h1>\n" +
-                "                        <p>Thanks for using [Product Name]. This email is the receipt for your purchase. No payment is due.</p>\n" +
-                "                        <p>This purchase will appear as “[Credit Card Statement Name]” on your credit card statement for your {{credit_card_brand}} ending in {{credit_card_last_four}}. Need to <a href=\"{{billing_url}}\">update your payment information</a>?</p>\n" +
+                "                        <h1>Hi "+firstName+" "+lastName+",</h1>\n" +
+                "<p>Thanks for using TTB Computer Shop. This email is the receipt for your purchase. No payment is due.</p>"+
+ "               <p>This purchase will appear on your order page in our website. Need more information?  Please  check your order in button below or contact us</p>"+
                 "                        <!-- Discount -->\n" +
                 "                        <!-- <table class=\"discount\" align=\"center\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">\n" +
                 "                          <tr>\n" +
@@ -556,9 +559,9 @@ public class OrderServiceImpl implements OrderService {
                 "                        <table class=\"purchase\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">\n" +
                 "                          <tr>\n" +
                 "                            <td>\n" +
-                "                              <h3>{{receipt_id}}</h3></td>\n" +
+                "                              <h3>"+"Order Number: "+orderId +"</h3></td>\n" +
                 "                            <td>\n" +
-                "                              <h3 class=\"align-right\">{{date}}</h3></td>\n" +
+                "                              <h3 class=\"align-right\">"+"Date: "+ngaydat+"</h3></td>\n" +
                 "                          </tr>\n" +
                 "                          <tr>\n" +
                 "                            <td colspan=\"2\">\n" +
@@ -591,7 +594,7 @@ public class OrderServiceImpl implements OrderService {
                 "                        </table>\n" +
                 "                        <p>If you have any questions about this receipt, simply reply to this email or reach out to our <a href=\"{{support_url}}\">support team</a> for help.</p>\n" +
                 "                        <p>Cheers,\n" +
-                "                          <br>The [Product Name] team</p>\n" +
+                "                          <br>The "+"TTB COMPUTER SHOP"+" team</p>\n" +
                 "                        <!-- Action -->\n" +
                 "                        <table class=\"body-action\" align=\"center\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\">\n" +
                 "                          <tr>\n" +
@@ -601,7 +604,7 @@ public class OrderServiceImpl implements OrderService {
                 "                              <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\">\n" +
                 "                                <tr>\n" +
                 "                                  <td align=\"center\">\n" +
-                "                                    <a href=\"https://vuihoc.vn\" class=\"f-fallback button button--blue\" target=\"_blank\">View detail order</a>\n" +
+                "                                    <a href=\"http://localhost:3000\" class=\"f-fallback button button--blue\" target=\"_blank\">View detail order</a>\n" +
                 "                                  </td>\n" +
                 "                                </tr>\n" +
                 "                              </table>\n" +
@@ -683,6 +686,7 @@ public class OrderServiceImpl implements OrderService {
         Order orderr = new Order();
         orderr = orderRepository.save(orderExist);
         String email = orderExist.getUser().getEmail();
+        String name= orderExist.getUser().getFirstName();
         String address=orderExist.getAddress();
         String phone=orderExist.getPhone();
         String ngaydat=orderExist.getNgaydat().toString();
