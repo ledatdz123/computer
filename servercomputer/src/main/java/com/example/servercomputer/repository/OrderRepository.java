@@ -21,13 +21,15 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //            "\n", nativeQuery = true)
 //    List<Object[]> getReportbyDate(@Param(value = "startDate") String startDate, @Param(value = "endDate") String endDate);
     @Query(value = "SELECT orders.ngaydat, sum(order_detail.detail_price) as money FROM `orders` inner join order_detail on orders.id = order_detail.order_id \n" +
-            "WHERE orders.status = \"Delivered\"\n" +
-            "AND DATE(orders.ngaydat) BETWEEN :startDate AND :endDate\n" +
-            "GROUP by ngaydat order by ngaydat", nativeQuery = true)
+            "WHERE DATE(orders.ngaydat) BETWEEN :startDate AND :endDate \n" +
+            "AND (orders.status = 'Delivered' OR orders.payment = 'paypal' )\n" +
+            "GROUP by ngaydat order by ngaydat\n", nativeQuery = true)
     List<Object[]> getReportbyDate(@Param(value = "startDate") String startDate, @Param(value = "endDate") String endDate);
 
 //    use cputer;
 //    SELECT orders.ngaydat, sum(order_detail.detail_price) as money FROM orders inner join order_detail on orders.id = order_detail.order_id
 //    WHERE month(orders.ngaydat)=11
 //    GROUP by ngaydat order by ngaydat
+    @Query(value = "SELECT product.id, product.name,product.image, sum(o.detail_qty) as sells from order_detail as o inner join product on o.product_id = product.id group by product.id order by sells desc limit 5", nativeQuery = true)
+    List<Object[]> getTopFiveProduct();
 }

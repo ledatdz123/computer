@@ -33,4 +33,8 @@ public class ReportServiceImpl implements ReportService{
 		return orderRepository.getReportbyDate(startDate, endDate);
 	}
 
+	@Override
+	public List<Object[]> getTopFiveProduct() {
+		return orderRepository.getTopFiveProduct();
+	}
 }

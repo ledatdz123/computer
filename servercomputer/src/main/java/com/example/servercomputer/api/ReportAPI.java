@@ -42,4 +42,9 @@ public class ReportAPI {
 //		LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE);
 		return reportService.getReportByDate(startDate, endDate);
 	}
+	@GetMapping("/topfiveproduct")
+	public List<Object[]> getTopFiveProduct(){
+
+		return reportService.getTopFiveProduct();
+	}
 }

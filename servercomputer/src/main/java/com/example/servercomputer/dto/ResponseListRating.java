@@ -14,5 +14,4 @@ public class ResponseListRating {
     String email;
     String comment;
     float scores;
-
 }

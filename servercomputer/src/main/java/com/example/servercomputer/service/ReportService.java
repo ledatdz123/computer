@@ -9,4 +9,5 @@ public interface ReportService {
 	List<Object[]> getReportByTime(LocalDate startDate, LocalDate endDate);
 
 	List<Object[]> getReportByDate(String startDate, String endDate);
+	List<Object[]> getTopFiveProduct();
 }
